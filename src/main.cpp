@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "util.h"
+#include "titleScreen.h"
 
 
 class Game {
@@ -9,17 +10,29 @@ class Game {
 private:
     ScreenType screenType = TITLE;
 
+    TitleScreen titleScreen {&screenType, 100.0f};
+
 public:
     Game() {
 
     }
 
     void update(float dt) {
-
+        switch (screenType) {
+        case TITLE:
+            titleScreen.update(dt); break;
+        default:
+            break;
+        }
     }
 
     void draw() {
-
+        switch (screenType) {
+        case TITLE:
+            titleScreen.draw(); break;
+        default:
+            break;
+        }
     }
 
     ~Game() {

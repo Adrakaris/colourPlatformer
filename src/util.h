@@ -4,8 +4,6 @@
 #include <raymath.h>
 #include <cstdint>
 
-// world coordinate scale (coordinate values from top to bottom)
-const float SCALE = 320.0f;
 
 // screen definitoins
 enum ScreenType {
@@ -15,11 +13,13 @@ enum ScreenType {
 // screen class
 class Screen {
 protected:
+    float worldScale;  // world coordinate scale -- how many camera units are from top to bottom
     ScreenType* screenRef;  // this isnt very OOP but ... ah whatever
 
 public:
-    Screen(ScreenType* screenRef) {
+    Screen(ScreenType* screenRef, float worldScale) {
         this->screenRef = screenRef;
+        this->worldScale = worldScale;
     };
     virtual void update(float dt) = 0;  // pure virutal function -- a function which MUST be overridden
     virtual void draw() = 0;
