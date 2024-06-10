@@ -1,27 +1,48 @@
 #include <raylib.h>
-#include "ball.h"
+#include <iostream>
+
+#include "util.h"
+
+
+class Game {
+
+private:
+    ScreenType screenType = TITLE;
+
+public:
+    Game() {
+
+    }
+
+    void update(float dt) {
+
+    }
+
+    void draw() {
+
+    }
+
+    ~Game() {
+
+    }
+
+};
+
+
 
 int main()
 {
-    Color darkGreen = Color{20, 160, 133, 255};
+    std::cout << "CPP VERSION:" << __cplusplus << std::endl;
 
-    const int screenWidth = 800;
-    const int screenHeight = 600;
-
-    Ball ball = Ball();
-
-    InitWindow(screenWidth, screenHeight, "My first RAYLIB program!");
+    InitWindow(1440, 960, "Colour Platformer");
     SetTargetFPS(60);
 
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-        ClearBackground(darkGreen);
-        ball.Update();
-        ball.Draw();
-        EndDrawing();
+    Game game;
+
+    while (!WindowShouldClose()) {
+        game.update(GetFrameTime());
+        game.draw();
     }
 
-    CloseWindow();
     return 0;
 }
