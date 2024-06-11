@@ -1,8 +1,9 @@
 
 #include <util.h>
 #include <raylib.h>
-
 #include <raytmx.h>
+#include <vector>
+
 
 
 class TestScreen : Screen {
@@ -13,6 +14,8 @@ private:
     Vector2 cameraTarget = {0, 0};
 
     TmxMap* p_map;
+
+    std::vector<Rectangle> levelColliders = {};
 
 public: 
     TestScreen(ScreenType* screenRef, float worldScale);

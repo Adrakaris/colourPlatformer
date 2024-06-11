@@ -3,7 +3,13 @@
 #include <raylib.h>
 #include <raymath.h>
 #include <cstdint>
+#include <raytmx.h>
+#include <vector>
+#include <iostream>
 
+
+// struct print overloads
+std::ostream& operator<<(std::ostream& os, const Rectangle& rect);
 
 // screen definitoins
 enum ScreenType {
@@ -33,6 +39,12 @@ inline void DrawCentredText(const Font& font, const char* text, Vector2 position
     position.x -= bbox.x / 2;  // centre the text by moving the position halfway left
     DrawTextEx(font, text, position, fontSize, fontSpacing, tint);
 }
+
+
+// raytmx util functions
+
+TmxLayer* findTmxObjLayerWithName(const TmxMap* map_ref, const char* name);  // can return null
+std::vector<Rectangle> extractAABBsFromObjLayer(const TmxLayer* objLayerRef);
 
 
 // colour util functions

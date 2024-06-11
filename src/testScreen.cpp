@@ -1,4 +1,59 @@
 #include "testScreen.h"
+#include <iostream>
+
+
+void _printMapProperties(TmxProperty properties[], uint32_t pLength);
+void _printMapLayers(TmxLayer layers[], uint32_t lLength);
+
+void printMapInformation(TmxMap* p_map) {
+    using namespace std;
+
+    printf("Map of %s (orientation %d, width %d, height %d, tile W/H %d/%d)\n", p_map->fileName, p_map->orientation, p_map->width, p_map->height, p_map->tileWidth, p_map->tileHeight);
+
+    cout << "==Map Properties==\n";
+    _printMapProperties(p_map->properties, p_map->propertiesLength);
+
+    cout << "==Layers==\n";
+    _printMapLayers(p_map->layers, p_map->layersLength);
+
+}
+
+void _printMapProperties(TmxProperty properties[], uint32_t pLength) {
+    using namespace std;
+
+    for (uint32_t i = 0; i < pLength; i++) {
+        TmxProperty* property = &properties[i];
+        cout << i << ") PROPERTY name: " << property->name  << " value: ";
+        switch (property->type) {
+            case PROPERTY_TYPE_STRING: cout << property->stringValue << endl; break;
+            case PROPERTY_TYPE_INT: cout << property->intValue << endl; break;
+            case PROPERTY_TYPE_BOOL: cout << property->boolValue << endl; break;
+            case PROPERTY_TYPE_FLOAT: cout << property->floatValue << endl; break;
+            case PROPERTY_TYPE_FILE: cout << "FILE<" << property->stringValue << ">" << endl; break;
+            case PROPERTY_TYPE_OBJECT: cout << "OBJECT<" << property->intValue << ">" << endl; break;
+            case PROPERTY_TYPE_COLOR: cout << "COL<###>" << endl; break;
+        }
+    }
+}
+
+void _printMapLayers(TmxLayer layers[], uint32_t lLength) {
+    using namespace std;
+
+    for (uint32_t i = 0; i < lLength; i++) {
+        TmxLayer* layer = &layers[i];
+        cout << "=== Layer\n";
+        cout << i << ") name: " << layer->name << " type: ";
+        switch (layer->type) {
+            case LAYER_TYPE_TILE_LAYER: cout << "TILE\n"; break;
+            case LAYER_TYPE_OBJECT_GROUP: cout << "OBJECT\n"; break; 
+            case LAYER_TYPE_IMAGE_LAYER: cout <<"IMAGE\n"; break;
+            case LAYER_TYPE_GROUP: cout << "GROUP\n";
+        }
+        cout << "=== Layer properties\n";
+        _printMapProperties(layer->properties, layer->propertiesLength);
+    }
+}
+
 
 TestScreen::TestScreen(ScreenType* screenRef, float worldScale) : Screen(screenRef, worldScale) {
     cameraScale = ((float) GetScreenHeight()) / worldScale;
@@ -8,6 +63,17 @@ TestScreen::TestScreen(ScreenType* screenRef, float worldScale) : Screen(screenR
     mainCamera.zoom = cameraScale;
 
     p_map = LoadTMX("assets/levels/test_level.tmx");
+    printMapInformation(p_map);  // debug
+
+    // get colliders
+    TmxLayer* collLayer = findTmxObjLayerWithName(p_map, "ground_coll");
+    // std::cout << "I found layer " << collLayer->name << std::endl;
+    levelColliders = extractAABBsFromObjLayer(collLayer);
+    std::cout << "colliders";
+    for (auto rect : levelColliders) {
+        std::cout << rect << " ";
+    }
+    std::cout << std::endl;
 
 }
 
