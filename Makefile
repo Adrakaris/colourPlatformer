@@ -254,6 +254,7 @@ INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external
 ifneq ($(wildcard /opt/homebrew/include/.*),)
     INCLUDE_PATHS += -I/opt/homebrew/include
 endif
+INCLUDE_PATHS += -I./lib
 
 # Define additional directories containing required header files
 ifeq ($(PLATFORM),PLATFORM_RPI)

@@ -3,7 +3,7 @@
 #include <raylib.h>
 #include <raymath.h>
 
-#include "util.h"
+#include <util.h>
 
 
 class TitleScreen : Screen {
