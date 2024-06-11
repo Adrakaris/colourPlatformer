@@ -7,7 +7,7 @@
 
 // screen definitoins
 enum ScreenType {
-    TITLE
+    TITLE, TEST
 };
 
 // screen class

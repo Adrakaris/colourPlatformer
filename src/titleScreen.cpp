@@ -9,6 +9,9 @@ TitleScreen::TitleScreen(ScreenType* screenRef, float worldScale) : Screen(scree
 }
 
 void TitleScreen::update(float dt) {
+    if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_T)) {
+        *screenRef = TEST;
+    }
 
 }
 

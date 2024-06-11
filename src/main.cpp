@@ -2,7 +2,8 @@
 #include <iostream>
 
 #include <util.h>
-#include "screen/titleScreen.h"
+#include "titleScreen.h"
+#include "testScreen.h"
 
 #define RAYTMX_IMPLEMENTATION
 #include <raytmx.h>
@@ -13,6 +14,7 @@ private:
     ScreenType screenType = TITLE;
 
     TitleScreen titleScreen {&screenType, 100.0f};
+    TestScreen testScreen {&screenType, 8.0f * 24};
 
 public:
     Game() {
@@ -23,6 +25,8 @@ public:
         switch (screenType) {
         case TITLE:
             titleScreen.update(dt); break;
+        case TEST:
+            testScreen.update(dt);
         default:
             break;
         }
@@ -32,6 +36,8 @@ public:
         switch (screenType) {
         case TITLE:
             titleScreen.draw(); break;
+        case TEST:
+            testScreen.draw();
         default:
             break;
         }
@@ -54,8 +60,8 @@ int main()
 
     Game game;
 
-    const char* tmx = "assets/levels/test_level.tmx";
-    TmxMap* map = LoadTMX(tmx);
+    // const char* tmx = "assets/levels/test_level.tmx";
+    // TmxMap* map = LoadTMX(tmx);
 
     // Camera2D camera;
     // camera.zoom = 1.0f;
@@ -83,7 +89,7 @@ int main()
         // }
         // EndDrawing();
     }
-    UnloadTMX(map);
+    // UnloadTMX(map);
     CloseWindow();
     return 0;
 }
