@@ -11,7 +11,7 @@
 class Game {
 
 private:
-    ScreenType screenType = TITLE;
+    ScreenType screenType = TEST;
 
     TitleScreen titleScreen {&screenType, 100.0f};
     TestScreen testScreen {&screenType, 8.0f * 24};

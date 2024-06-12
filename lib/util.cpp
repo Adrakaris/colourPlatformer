@@ -1,4 +1,3 @@
-#include <string>
 
 #include "util.h"
 
@@ -31,5 +30,18 @@ std::vector<Rectangle> extractAABBsFromObjLayer(const TmxLayer* objLayerRef) {
         bbs[i] = obj->aabb;
     }
     return bbs;
+}
+
+
+std::unordered_map<std::string, TmxObject*> getTmxObjectsNameMap(const TmxLayer* objLayerRef) {
+    TmxObject* objects = objLayerRef->exact.objectGroup.objects;
+    unsigned int length = objLayerRef->exact.objectGroup.objectsLength;
+
+    std::unordered_map<std::string, TmxObject*> mapping;
+    for (unsigned int i = 0; i < length; i++) {
+        std::string name = objects[i].name;
+        mapping[objects[i].name] = &objects[i];
+    }
+    return mapping;
 }
 

@@ -6,6 +6,8 @@
 #include <raytmx.h>
 #include <vector>
 #include <iostream>
+#include <unordered_map>
+#include <string>
 
 
 // struct print overloads
@@ -45,6 +47,7 @@ inline void DrawCentredText(const Font& font, const char* text, Vector2 position
 
 TmxLayer* findTmxObjLayerWithName(const TmxMap* map_ref, const char* name);  // can return null
 std::vector<Rectangle> extractAABBsFromObjLayer(const TmxLayer* objLayerRef);
+std::unordered_map<std::string, TmxObject*> getTmxObjectsNameMap(const TmxLayer* objLayerRef); // expects all objects to have unique names!
 
 
 // colour util functions
@@ -71,9 +74,17 @@ constexpr Color colFromHexAlpha(std::uint32_t hexCode) {
 // color definitions
 
 #pragma endregion
+
+
 #pragma region Shape and TExt
 
-
+inline Rectangle RectCentre(Vector2 centre, float width, float height) {
+    return Rectangle{
+        centre.x - width/2.0f,
+        centre.y - height/2.0f,
+        width, height
+    };
+}
 
 // element wise multiplies an array of vector of points by scale
 inline void scaleShape(Vector2* points, int numPoints, float scale) {

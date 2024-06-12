@@ -3,6 +3,11 @@
 #include <raylib.h>
 #include <raytmx.h>
 #include <vector>
+#include <unordered_map>
+#include <string>
+#include <memory>
+
+#include "entity/player.h"
 
 
 
@@ -16,6 +21,11 @@ private:
     TmxMap* p_map;
 
     std::vector<Rectangle> levelColliders = {};
+    std::unordered_map<std::string, TmxObject*> waypointObjects;
+
+    Vector2 startPoint;
+
+    std::unique_ptr<Player> player;
 
 public: 
     TestScreen(ScreenType* screenRef, float worldScale);

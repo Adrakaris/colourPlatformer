@@ -75,6 +75,18 @@ TestScreen::TestScreen(ScreenType* screenRef, float worldScale) : Screen(screenR
     }
     std::cout << std::endl;
 
+    // get waypoints
+    TmxLayer* waypoints = findTmxObjLayerWithName(p_map, "waypoints");
+    waypointObjects = getTmxObjectsNameMap(waypoints);
+    for (auto entry : waypointObjects) {
+        std::cout << entry.first << ": (x=" << entry.second->x << ", y=" << entry.second->y << ")";
+    }
+
+    TmxObject* startPointObj = waypointObjects.at("player_spawn");
+    startPoint = Vector2 {(float)startPointObj->x, (float)startPointObj->y};
+
+    // setup player
+    player = std::make_unique<Player>(18*8, 36*8, startPoint);
 }
 
 void TestScreen::update(float dt) {
@@ -82,19 +94,22 @@ void TestScreen::update(float dt) {
         *screenRef = TITLE;
     }
 
-    if (IsKeyDown(KEY_RIGHT)) {
-        cameraTarget.x += 1;
-    }
-    if (IsKeyDown(KEY_LEFT)) {
-        cameraTarget.x -= 1;
-    }
-    if (IsKeyDown(KEY_UP)) {
-        cameraTarget.y -= 1;
-    }
-    if (IsKeyDown(KEY_DOWN)) {
-        cameraTarget.y += 1;
-    }
-    mainCamera.target = cameraTarget;
+    player->update(dt);
+    player->updatePosition(dt, levelColliders);
+
+    // if (IsKeyDown(KEY_RIGHT)) {
+    //     cameraTarget.x += 1;
+    // }
+    // if (IsKeyDown(KEY_LEFT)) {
+    //     cameraTarget.x -= 1;
+    // }
+    // if (IsKeyDown(KEY_UP)) {
+    //     cameraTarget.y -= 1;
+    // }
+    // if (IsKeyDown(KEY_DOWN)) {
+    //     cameraTarget.y += 1;
+    // }
+    mainCamera.target = player->getPosition();
 }
 
 void TestScreen::draw() {
@@ -111,6 +126,8 @@ void TestScreen::draw() {
         // draw tilemap
         AnimateTMX(p_map);
         DrawTMX(p_map, &mainCamera, 0, 0, WHITE);
+
+        player->draw();
     }
     EndMode2D();
 
