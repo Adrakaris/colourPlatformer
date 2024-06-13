@@ -57,10 +57,10 @@ void _printMapLayers(TmxLayer layers[], uint32_t lLength) {
 
 TestScreen::TestScreen(ScreenType* screenRef, float worldScale) : Screen(screenRef, worldScale) {
     cameraScale = ((float) GetScreenHeight()) / worldScale;
+    mainCamera.zoom = cameraScale;
     mainCamera.target = cameraTarget;
     mainCamera.offset = Vector2{((float) GetScreenWidth())/2.0f, ((float) GetScreenHeight())/2.0f};
     mainCamera.rotation = 0;
-    mainCamera.zoom = cameraScale;
 
     p_map = LoadTMX("assets/levels/test_level.tmx");
     printMapInformation(p_map);  // debug
@@ -96,6 +96,7 @@ void TestScreen::update(float dt) {
 
     player->update(dt);
     player->updatePosition(dt, levelColliders);
+    player->draw();
 
     // if (IsKeyDown(KEY_RIGHT)) {
     //     cameraTarget.x += 1;
