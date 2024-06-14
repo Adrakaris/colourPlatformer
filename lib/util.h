@@ -12,6 +12,9 @@
 
 // struct print overloads
 std::ostream& operator<<(std::ostream& os, const Rectangle& rect);
+inline std::ostream& operator<<(std::ostream& os, const Vector2& vec) {
+    return os << "(" << vec.x << ", " << vec.y << ")";
+}
 
 // screen definitoins
 enum ScreenType {

@@ -27,6 +27,8 @@ private:
 
     std::unique_ptr<Player> player;
 
+    float timer = 0;
+
 public: 
     TestScreen(ScreenType* screenRef, float worldScale);
     void update(float dt) override;

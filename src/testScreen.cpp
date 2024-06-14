@@ -98,6 +98,12 @@ void TestScreen::update(float dt) {
     player->updatePosition(dt, levelColliders);
     player->draw();
 
+    timer += dt;
+    if (timer > 0.33) {
+        timer = 0;
+        std::cout << "Player speed: " << player->getSpeed() << std::endl;
+    }
+
     // if (IsKeyDown(KEY_RIGHT)) {
     //     cameraTarget.x += 1;
     // }

@@ -4,6 +4,8 @@
 
 class Player {
 // all speed should be in units per second (i.e. times delta time) so that times are consistent between frames
+    enum Direction { X, Y };
+
 private:
     float gravity;
     float jumpStrength;
@@ -26,6 +28,11 @@ public:
 
     Vector2 getPosition() { return position; }
     Rectangle getHitbox() { return hitbox; }
+    Vector2 getSpeed() { return Vector2 {xSpeed, ySpeed}; }
+
+private:
+    
+    void decelerate(Direction dir, float dt);
 };
 
 
