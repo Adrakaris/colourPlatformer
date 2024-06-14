@@ -79,14 +79,13 @@ TestScreen::TestScreen(ScreenType* screenRef, float worldScale) : Screen(screenR
     TmxLayer* waypoints = findTmxObjLayerWithName(p_map, "waypoints");
     waypointObjects = getTmxObjectsNameMap(waypoints);
     for (auto entry : waypointObjects) {
-        std::cout << entry.first << ": (x=" << entry.second->x << ", y=" << entry.second->y << ")";
+        std::cout << entry.first << ": (x=" << entry.second->x << ", y=" << entry.second->y << ")\n";
     }
 
-    TmxObject* startPointObj = waypointObjects.at("player_spawn");
-    startPoint = Vector2 {(float)startPointObj->x, (float)startPointObj->y};
+    startPoint = getObjPos(waypointObjects.at("player_spawn"));
 
     // setup player
-    player = std::make_unique<Player>(18*8, 36*8, startPoint);
+    player = std::make_unique<Player>(startPoint);
 }
 
 void TestScreen::update(float dt) {
@@ -94,28 +93,31 @@ void TestScreen::update(float dt) {
         *screenRef = TITLE;
     }
 
-    player->update(dt);
-    player->updatePosition(dt, levelColliders);
-    player->draw();
-
-    timer += dt;
-    if (timer > 0.33) {
-        timer = 0;
-        std::cout << "Player speed: " << player->getSpeed() << std::endl;
+    if (IsKeyPressed(KEY_P)) {
+        pause = !pause;
+    }
+    // if (pause) return;
+    // temporary (allow advancing frame by frame when paused)
+    if (!IsKeyPressed(KEY_K) && pause) {
+        return;
+    }
+    if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_R)) {
+        player->setPosition(getObjPos(waypointObjects.at("player_spawn")));
     }
 
-    // if (IsKeyDown(KEY_RIGHT)) {
-    //     cameraTarget.x += 1;
-    // }
-    // if (IsKeyDown(KEY_LEFT)) {
-    //     cameraTarget.x -= 1;
-    // }
-    // if (IsKeyDown(KEY_UP)) {
-    //     cameraTarget.y -= 1;
-    // }
-    // if (IsKeyDown(KEY_DOWN)) {
-    //     cameraTarget.y += 1;
-    // }
+
+    player->update(dt);
+    player->updatePosition(dt, levelColliders);
+
+    timer += dt;
+    if (timer > 0.5) {
+        timer = 0;
+        std::cout << "(Player) speed: " << player->getSpeed()  
+            << " state: " << player->getStateValue() 
+            << " pos: " << player->getPosition() 
+            << std::endl;
+    }
+
     mainCamera.target = player->getPosition();
 }
 
@@ -135,10 +137,20 @@ void TestScreen::draw() {
         DrawTMX(p_map, &mainCamera, 0, 0, WHITE);
 
         player->draw();
+
+        // for (auto rect : levelColliders) {
+        //     DrawRectangleRoundedLines(rect, 0, 1, 0.3, GREEN);
+        // }
     }
     EndMode2D();
-
-    
+    {
+        char data[40];
+        sprintf_s<40>(data, "Position: (%.2f, %.2f)", player->getPosition().x, player->getPosition().y);
+        DrawText(data, 8, 8, 12, BLACK);
+        if (pause) {
+            DrawText("PAUSED", 8, 20, 20, RED);
+        }
+    }
     EndDrawing();
 }
 

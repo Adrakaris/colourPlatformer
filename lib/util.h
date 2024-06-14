@@ -10,11 +10,11 @@
 #include <string>
 
 
-// struct print overloads
-std::ostream& operator<<(std::ostream& os, const Rectangle& rect);
-inline std::ostream& operator<<(std::ostream& os, const Vector2& vec) {
-    return os << "(" << vec.x << ", " << vec.y << ")";
+namespace consts {
+    const float epsilon = 0.0001f;
 }
+
+
 
 // screen definitoins
 enum ScreenType {
@@ -51,7 +51,7 @@ inline void DrawCentredText(const Font& font, const char* text, Vector2 position
 TmxLayer* findTmxObjLayerWithName(const TmxMap* map_ref, const char* name);  // can return null
 std::vector<Rectangle> extractAABBsFromObjLayer(const TmxLayer* objLayerRef);
 std::unordered_map<std::string, TmxObject*> getTmxObjectsNameMap(const TmxLayer* objLayerRef); // expects all objects to have unique names!
-
+inline Vector2 getObjPos(const TmxObject* objectRef) { return Vector2 {(float)objectRef->x, (float)objectRef->y}; }
 
 // colour util functions
 #pragma region colour_util_functions
@@ -101,5 +101,14 @@ inline void scaleShape(Vector2* points, int numPoints, float scale) {
 
 #pragma endregion
 
+// struct print overloads
+std::ostream& operator<<(std::ostream& os, const Rectangle& rect);
 
+inline std::ostream& operator<<(std::ostream& os, const Vector2& vec) {
+    return os << "(" << vec.x << ", " << vec.y << ")";
+}
+
+inline bool operator==(Rectangle r1, Rectangle r2) {
+    return r1.x == r2.x && r1.y == r2.y && r1.height == r2.height && r1.width == r2.width;
+}
 

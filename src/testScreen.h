@@ -27,7 +27,9 @@ private:
 
     std::unique_ptr<Player> player;
 
-    float timer = 0;
+    float timer = 0;  // this is for printing data at specific intervals
+
+    bool pause = false;
 
 public: 
     TestScreen(ScreenType* screenRef, float worldScale);
