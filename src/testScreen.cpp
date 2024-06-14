@@ -110,7 +110,7 @@ void TestScreen::update(float dt) {
     player->updatePosition(dt, levelColliders);
 
     timer += dt;
-    if (timer > 0.5) {
+    if (timer > 1) {
         timer = 0;
         std::cout << "(Player) speed: " << player->getSpeed()  
             << " state: " << player->getStateValue() 

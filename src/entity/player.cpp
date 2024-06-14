@@ -24,7 +24,7 @@ void Player::updatePosition(float dt, std::vector<Rectangle> colliders) {
 
 
     // this is the least efficient method of collision detection but should be fine
-    state = IN_AIR;
+    state = IN_AIR;  // TODO: we need some better way of finding state this is kinda dumb
     for (auto rect : colliders) {
         updateCollisionWithGround(rect, dt);
     }
@@ -46,6 +46,7 @@ void Player::updateCollisionWithGround(const Rectangle& rect, float dt) {
     // std::cout << "COLLISION: Rect " << rect << " hbox " << hitbox << " lasthbox " << lastHitbox << std::endl;
 
     if (CheckCollisionRecs(rect, lastHitbox)) {
+        state = ON_GROUND;
         return;  // we assume if both hitboxes are colliding then we have already struct something and dont need to then check it
     }
     
