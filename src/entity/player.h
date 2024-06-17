@@ -18,8 +18,9 @@ private:
 
     float xSpeed = 0;
     float ySpeed = 0;
-    const float maxSpeed = 480.0f;
-    const float acceleration = 15.0f;
+    const float maxXSpeed = 240.0f;
+    const float maxYSpeed = 600.0f;
+    const float acceleration = 12.0f;
     const float deceleration = 3000.0f;
 
     // bool onGround = false;

@@ -103,8 +103,8 @@ void Player::inputManager(float dt) {
     decelerate(X, dt);
     // decelerate(Y, dt);
 
-    xSpeed = Clamp(xSpeed, -maxSpeed, maxSpeed);
-    ySpeed = Clamp(ySpeed, -maxSpeed, maxSpeed);
+    xSpeed = Clamp(xSpeed, -maxXSpeed, maxXSpeed);
+    ySpeed = Clamp(ySpeed, -maxYSpeed, maxYSpeed);
 }
 
 void Player::decelerate(Direction dir, float dt) {
