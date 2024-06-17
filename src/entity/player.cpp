@@ -130,7 +130,6 @@ void Player::decelerate(Direction dir, float dt) {
     }
 }
 
-
 std::string Player::getStateValue() {
     switch (state) {
         case ON_GROUND: return "on_ground";    

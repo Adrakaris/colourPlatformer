@@ -49,6 +49,7 @@ inline void DrawCentredText(const Font& font, const char* text, Vector2 position
 // raytmx util functions
 
 TmxLayer* findTmxObjLayerWithName(const TmxMap* map_ref, const char* name);  // can return null
+TmxLayer* findTmxTiledLayerWithName(const TmxMap* map_ref, const char* name);
 std::vector<Rectangle> extractAABBsFromObjLayer(const TmxLayer* objLayerRef);
 std::unordered_map<std::string, TmxObject*> getTmxObjectsNameMap(const TmxLayer* objLayerRef); // expects all objects to have unique names!
 inline Vector2 getObjPos(const TmxObject* objectRef) { return Vector2 {(float)objectRef->x, (float)objectRef->y}; }

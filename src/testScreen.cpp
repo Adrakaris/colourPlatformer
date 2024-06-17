@@ -96,6 +96,33 @@ void TestScreen::update(float dt) {
     if (IsKeyPressed(KEY_P)) {
         pause = !pause;
     }
+
+    // Explosion
+    // Not currently in the player class as it doesn't have a p_map ref and didn't want to pass it in
+    // Currently shoots in an X
+    if (IsKeyPressed(KEY_E)) {
+        TmxLayer* tileLayer = findTmxTiledLayerWithName(p_map, "Tile Layer 1");
+        uint32_t* tileObjects = tileLayer->exact.tileLayer.tiles;
+
+        Vector2 playerPosition = player->getPosition();
+        uint32_t x = playerPosition.x / p_map->tileWidth;
+        uint32_t y = playerPosition.y / p_map->tileHeight;
+
+        for(uint32_t i; i < 5; i++) {
+            uint32_t tileIndex;
+            tileIndex = (y + i - 1) * p_map->width + x + i;
+            tileObjects[tileIndex] += 16;
+            tileIndex = (y + i - 1) * p_map->width + x - i;
+            tileObjects[tileIndex] += 16;
+            tileIndex = (y - i - 1) * p_map->width + x + i;
+            tileObjects[tileIndex] += 16;
+            tileIndex = (y - i - 1) * p_map->width + x - i;
+            tileObjects[tileIndex] += 16;
+
+        }
+
+    }
+
     // if (pause) return;
     // temporary (allow advancing frame by frame when paused)
     if (!IsKeyPressed(KEY_K) && pause) {
