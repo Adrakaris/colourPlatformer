@@ -84,6 +84,11 @@ TestScreen::TestScreen(ScreenType* screenRef, float worldScale) : Screen(screenR
 
     startPoint = getObjPos(waypointObjects.at("player_spawn"));
 
+    // get tiles
+    TmxLayer* tileLayerWrapper = findTmxTiledLayerWithName(p_map, "Tile Layer 1");
+    tileLayer = &tileLayerWrapper->exact.tileLayer;
+
+
     // setup player
     player = std::make_unique<Player>(startPoint);
 }
@@ -101,24 +106,32 @@ void TestScreen::update(float dt) {
     // Not currently in the player class as it doesn't have a p_map ref and didn't want to pass it in
     // Currently shoots in an X
     if (IsKeyPressed(KEY_E)) {
-        TmxLayer* tileLayer = findTmxTiledLayerWithName(p_map, "Tile Layer 1");
-        uint32_t* tileObjects = tileLayer->exact.tileLayer.tiles;
+        uint32_t* tileObjects = tileLayer->tiles;
 
         Vector2 playerPosition = player->getPosition();
         uint32_t x = playerPosition.x / p_map->tileWidth;
         uint32_t y = playerPosition.y / p_map->tileHeight;
 
-        for(uint32_t i; i < 5; i++) {
-            uint32_t tileIndex;
-            tileIndex = (y + i - 1) * p_map->width + x + i;
-            tileObjects[tileIndex] += 16;
-            tileIndex = (y + i - 1) * p_map->width + x - i;
-            tileObjects[tileIndex] += 16;
-            tileIndex = (y - i - 1) * p_map->width + x + i;
-            tileObjects[tileIndex] += 16;
-            tileIndex = (y - i - 1) * p_map->width + x - i;
-            tileObjects[tileIndex] += 16;
+        for (int i = -radius; i <= radius; i++) {
+            for (int j = -radius; j <= radius; j++) {
+                // std::cout << "Check " << i << " " << j << std::endl;
+                bool closeEnough = (i+0.5f)*(i+0.5f) + (j+0.5f)*(j+0.5f) <= radius*radius;
 
+                if (!closeEnough) continue;
+
+                uint32_t tileIndex = (y + i) * p_map->width + (x + j); 
+
+                if (!(tileIndex >= 0 && tileIndex < tileLayer->tilesLength)) continue;  // invalid tile coord
+
+                if (tileObjects[tileIndex] == 0) continue;
+
+                if (((tileObjects[tileIndex] - 1) / 16) % 2 == 0) {
+                    tileObjects[tileIndex] += 16;
+                } 
+                else {  // NOTE: toggle only for test screen
+                    tileObjects[tileIndex] -= 16;
+                }
+            }
         }
 
     }

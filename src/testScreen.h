@@ -14,16 +14,23 @@
 class TestScreen : Screen {
 
 private:
+    const float radius = 8;
+    
     float cameraScale;
     Camera2D mainCamera;
     Vector2 cameraTarget = {0, 0};
+
+    //
 
     TmxMap* p_map;
 
     std::vector<Rectangle> levelColliders = {};
     std::unordered_map<std::string, TmxObject*> waypointObjects;
+    TmxTileLayer* tileLayer;
 
     Vector2 startPoint;
+
+    //
 
     std::unique_ptr<Player> player;
 
