@@ -19,6 +19,18 @@ TmxLayer* findTmxObjLayerWithName(const TmxMap* map_ref, const char* name) {
     return nullptr;
 }
 
+TmxLayer* findTmxTiledLayerWithName(const TmxMap* map_ref, const char* name) {
+        for (uint32_t i = 0; i < map_ref->layersLength; i++) {
+        TmxLayer* layer = &map_ref->layers[i];
+
+        if (layer->type != LAYER_TYPE_TILE_LAYER) continue;
+
+        if (std::string(layer->name).compare(std::string(name)) == 0) {
+            return layer;
+        }
+    }
+    return nullptr;
+}
 
 std::vector<Rectangle> extractAABBsFromObjLayer(const TmxLayer* objLayerRef) {
     TmxObject* objects = objLayerRef->exact.objectGroup.objects;
