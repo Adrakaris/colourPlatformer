@@ -16,8 +16,15 @@ class Game {
     TitleScreen titleScreen{&screenType, 100.0f};
     TestScreen testScreen{&screenType, 8.0f * 24};
 
+    Font mainFont;
+
    public:
     Game() {
+
+        mainFont = LoadFontEx("assets/font/jersey10.ttf", 128, 0, 0);
+
+        titleScreen.initialise(mainFont);
+
     }
 
     void update(float dt) {
@@ -45,6 +52,8 @@ class Game {
     }
 
     ~Game() {
+
+        UnloadFont(mainFont);
     }
 };
 

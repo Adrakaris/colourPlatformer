@@ -3,3 +3,4 @@
 main
 **/*.tiled-session
 ignore
+**/*.pdn

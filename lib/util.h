@@ -81,6 +81,7 @@ constexpr Color colFromHexAlpha(std::uint32_t hexCode) {
 
 #pragma region Shape and TExt
 
+
 inline Rectangle RectCentre(Vector2 centre, float width, float height) {
     return Rectangle{
         centre.x - width/2.0f,
@@ -97,6 +98,15 @@ inline void scaleShape(Vector2* points, int numPoints, float scale) {
         // std::cout << "New shape " << points[i].x << "," << points[i].y << "; " << std::endl;
     }
 }
+
+// draw text centre-justified on the left-right -- the top-bottom is not centred! Returns the bounding box
+inline Rectangle DrawTextExCentred(const Font& font, const char* text, Vector2 position, float fontSize, float fontSpacing, Color tint) {
+    Vector2 bbox = MeasureTextEx(font, text, fontSize, fontSpacing);
+    position.x -= bbox.x / 2;  // centre the text by moving the position halfway left
+    DrawTextEx(font, text, position, fontSize, fontSpacing, tint);
+    return Rectangle { position.x, position.y, bbox.x, bbox.y };
+}
+
 
 
 #pragma endregion
